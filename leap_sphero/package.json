@@ -1,0 +1,14 @@
+{
+  "name": "leap_sphero",
+  "version": "1.0.0",
+  "description": "",
+  "main": "LeapSphero.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cylon-sphero": "^0.23.0"
+  }
+}
