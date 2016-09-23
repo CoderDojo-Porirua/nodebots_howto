@@ -1,44 +1,56 @@
 var Cylon = require('cylon');
-var counter = 0;
+
+function componentToHex(c) {
+  var hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+function xyToDegrees(x, y) {
+  return Math.round(Math.atan2(y, x) * 180 / Math.PI) + 180;
+}
+
+function xyToSpeed(x, y) {
+  var speed = Math.round(Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)));
+  if (speed > 100) return 0;
+  return speed;
+}
+
+function oneInEvery(number, every) {
+  return !(number % every);
+}
 
 Cylon.robot({
   connections: {
-    leapmotion: { adaptor: 'leapmotion' },
-    sphero: { adaptor: 'sphero', port: 'COM6' }
+    leapmotion: {adaptor: 'leapmotion'},
+    sphero:     {adaptor: 'sphero', port: 'COM6'}
   },
-
   devices: {
-    leapmotion: { driver: 'leapmotion', connection: 'leapmotion' },
-    sphero: { driver: 'sphero', connection: 'sphero' }
+    leapmotion: {driver: 'leapmotion', connection: 'leapmotion'},
+    sphero:     {driver: 'sphero', connection: 'sphero'}
   },
 
   work: function(my) {
+	var counter = 0;
     my.leapmotion.on('hand', function(hand) {
-      //var r = hand.palmY.fromScale(100, 600).toScale(0, 359) | 0;
-	  //my.sphero.roll(60, r);
-	  var direction = Math.atan2(hand.palmZ, hand.palmX) * 180 / Math.PI;
-	  direction += 180;
-	  direction = Math.round(direction);
-	  var speedX = hand.palmX.fromScale (-200, 200).toScale(-100, 100);
-	  var speedZ = hand.palmZ.fromScale (-200, 200).toScale(-100, 100);
-	  var speed = Math.round(Math.sqrt(Math.pow(speedX, 2) + Math.pow(speedZ, 2)));
 	  counter++;
-	  
-	  //console.log(speedX + '\t' + speedZ + '\t' + speed)
-
-	  var height = hand.palmY.fromScale (0, 400).toScale(0, 255);
-	  
-	  if(Math.abs(hand.palmZ) > 300 || Math.abs(hand.palmX) > 300){
-		  speed = 0;
-	  } 
-	  
-	  if(!(counter % 10)) {
+	  if(oneInEvery(counter, 50)) {
+	    var direction = xyToDegrees(hand.palmX, hand.palmZ);
+	    var speedX = hand.palmX.fromScale(-400, 400).toScale(-200, 200);
+	    var speedZ = hand.palmZ.fromScale(-400, 400).toScale(-200, 200);
+	    var speed = xyToSpeed(speedX, speedZ);
+	    var red = Math.round(speed.fromScale(0, 100).toScale(0, 255));
+	    var green = 255 - red;
+		var colour = rgbToHex(red, green, 0);
+	    //var height = hand.palmY.fromScale(0, 400).toScale(0, 255);
 		my.sphero.roll(speed, direction);
-        my.sphero.setRgbLed(height, 0, 0);
-		console.log(direction + " degrees at " + speed + " % speed");
+		my.sphero.color(colour);
+        //my.sphero.randomColor();
+		console.log(direction + " degrees at " + speed + " % speed, colour " + color);
 	  }
-
-	  
     });
   }
 })
