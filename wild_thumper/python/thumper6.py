@@ -39,12 +39,9 @@ def go(side, direction, speed):
  pwm[side].ChangeDutyCycle(speed)
 
 try:
- go("L", "F", 10)
- go("R", "F", 10)
- time.sleep(2)
- go("L", "F", 20)
- go("R", "F", 20)
- time.sleep(2)
+ go("L", "F", 100)
+ go("R", "F", 100)
+ time.sleep(0.3)
  go("L", "F", 30)
  go("R", "F", 30)
  time.sleep(2)
@@ -79,6 +76,9 @@ try:
  go("R", "F", 10)
  time.sleep(2)
 
+ go("L", "F", 100)
+ go("R", "F", 100)
+ time.sleep(0.3)
 except:
  cleanup()
 

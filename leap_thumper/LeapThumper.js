@@ -19,7 +19,7 @@ function oneInEvery(number, every) {
 Cylon.robot({
   connections: {
     raspi: { adaptor: 'raspi' },
-    leapmotion: { adaptor: 'leapmotion', host: '172.22.2.55' }
+    leapmotion: { adaptor: 'leapmotion', host: '172.22.2.109' }
   },
 
   devices: {
@@ -41,7 +41,7 @@ Cylon.robot({
 
 	  counter++;
 	  if(oneInEvery(counter, 50)) {
-      console.log.info(payload.toString());
+      console.log(payload.toString());
 
 	  //   var direction = xyToDegrees(hand.palmX, hand.palmZ);
 	  //   var positionX = hand.palmX.fromScale(-400, 400).toScale(-200, 200);
