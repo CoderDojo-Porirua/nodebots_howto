@@ -19,15 +19,18 @@ function oneInEvery(number, every) {
 Cylon.robot({
   connections: {
     raspi: { adaptor: 'raspi' },
-    leapmotion: { adaptor: 'leapmotion', host: '192.168.1.64' }
+    leapmotion: { adaptor: 'leapmotion', host: '172.22.2.55' }
   },
 
   devices: {
     led: { driver: 'led', pin: 11 },
     leapmotion: { driver: 'leapmotion' },
-
-    motorL: { driver: 'motor', pin: 3 },
-    motorR: { driver: 'motor', pin: 3 }
+    motorL: { driver: 'motor', pin: 26 },
+    motorR: { driver: 'motor', pin: 21 },
+    motorFL: { driver: 'direct-pin', pin: 13 },
+    motorFR: { driver: 'direct-pin', pin: 19 },
+    motorBL: { driver: 'direct-pin', pin: 20 },
+    motorBR: { driver: 'direct-pin', pin: 16 }
   },
 
   work: function(my) {
@@ -35,21 +38,33 @@ Cylon.robot({
 
     var counter = 0;
     my.leapmotion.on('hand', function(hand) {
+
 	  counter++;
 	  if(oneInEvery(counter, 50)) {
-	    var direction = xyToDegrees(hand.palmX, hand.palmZ);
-	    var positionX = hand.palmX.fromScale(-400, 400).toScale(-200, 200);
-	    var speed = hand.palmZ.fromScale(-400, 400).toScale(-200, 200);
+      console.log.info(payload.toString());
 
-      var speed = xyToSpeed(speedX, speedZ);
-
-
-
-	    my.sphero.roll(speed, direction);
-  		my.sphero.color(colour);
-          //my.sphero.randomColor();
-  		console.log(direction + " degrees at " + speed + " % speed, colour " + color);
-  	  }
+	  //   var direction = xyToDegrees(hand.palmX, hand.palmZ);
+	  //   var positionX = hand.palmX.fromScale(-400, 400).toScale(-200, 200);
+	  //   var speed = hand.palmZ.fromScale(-400, 400).toScale(-200, 200);
+    //
+    //
+    //
+    //   var speed = xyToSpeed(speedX, speedZ);
+    //
+    //   my.motorL.speed(100);
+    //   my.motorR.speed(100);
+    //   my.motorL.speed(100);
+    //   my.motorL.speed(100);
+    //
+    //   after((5).seconds(), function() {
+    //   my.motor.stop();
+    // });
+    //
+	  //   my.sphero.roll(speed, direction);
+  	// 	my.sphero.color(colour);
+    //       //my.sphero.randomColor();
+  	// 	console.log(direction + " degrees at " + speed + " % speed, colour " + color);
+  	//   }
     });
 
   }
