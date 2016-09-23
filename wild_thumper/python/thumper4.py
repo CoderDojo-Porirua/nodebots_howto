@@ -30,7 +30,7 @@ def cleanup():
  GPIO.cleanup() 
 
 def go(side, direction, speed):
- if direction == "F":
+ if direction == "B":
   GPIO.output(pins[side]["ina"], 1)
   GPIO.output(pins[side]["inb"], 0)
  else:
@@ -39,12 +39,33 @@ def go(side, direction, speed):
  pwm[side].ChangeDutyCycle(speed)
 
 try:
+ go("L", "F", 10)
+ go("R", "F", 10)
+ time.sleep(2)
+ go("L", "F", 20)
+ go("R", "F", 20)
+ time.sleep(2)
+ go("L", "F", 50)
+ go("R", "F", 50)
+ time.sleep(3)
  go("L", "F", 100)
  go("R", "F", 100)
- time.sleep(1)
- go("L", "B", 100)
- go("R", "B", 100)
- time.sleep(1)
+ time.sleep(5)
+ go("L", "F", 50)
+ go("R", "F", 50)
+ time.sleep(3)
+ go("L", "F", 40)
+ go("R", "F", 40)
+ time.sleep(2)
+ go("L", "F", 30)
+ go("R", "F", 30)
+ time.sleep(2)
+ go("L", "F", 20)
+ go("R", "F", 20)
+ time.sleep(2)
+ go("L", "F", 10)
+ go("R", "F", 10)
+ time.sleep(2)
 
 except:
  cleanup()
